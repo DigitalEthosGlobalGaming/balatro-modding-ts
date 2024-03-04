@@ -21,3 +21,8 @@ export function loadMods(modsToLoad: ModDefinition[]) {
 export function loadMod(mod: ModDefinition) {
     table.insert(mods, mod);
 }
+
+
+export function addEvent(opt: EventProperties) {
+    G.E_MANAGER.addEvent(Event(opt));
+}
