@@ -1,38 +1,22 @@
-const testMod: ModDefinition = {
-    mod_id: "test-mod-0001",
-    name: "TestMod",
-    version: "0.0.2",
-    author: "stinkfire",
-    description: [
-        "Test Mod 1"
-    ],
-    enabled: true,
-    on_pre_load: () => {        
-        sendDebugMessage("on_pre_load");
-    },
-    on_enable: () => {
-        sendDebugMessage("on_enable");
-    },
-    on_disable: () => {
-        sendDebugMessage("on_disable");
-    },
-    on_pre_update: () => {
-        sendDebugMessage("on_pre_update");
-    },
-    on_post_update: () => {
-        sendDebugMessage("on_post_update");
-    },
-    on_pre_render: () => {
-        sendDebugMessage("on_pre_render");
-    },
-    on_post_render: () => {
-        sendDebugMessage("on_post_render");
-    },
-    on_key_pressed: (keyName: string) => {
-        sendDebugMessage("on_key_pressed");
-    },
-    on_mouse_pressed: (x: number, y: number, button: string, touches: number) => {
-        sendDebugMessage("on_mouse_pressed");
+import { Mod } from "@balatrots/mod";
+
+export class TestMod extends Mod {
+    constructor() {
+        super({
+            mod_id: "test-mod-0001",
+            name: "TestMod",
+            version: "0.0.2",
+            url: "https://github.com/DigitalEthosGlobalGaming/balatro-modding-ts",
+            author: "stinkfire",
+            description: [],
+            enabled: false
+        });
+    }
+
+    // The idea is that every time you press a key it should increase the count.
+    // This is a way we can test setting data across reloads.
+    onKeyPressed(keyName: string | undefined): void {
+        this.setData("keyPressed", this.getData("keyPressed", 0) + 1);
+        sendDebugMessage(this.getData("keyPressed", 0).toString());
     }
 }
-export { testMod };

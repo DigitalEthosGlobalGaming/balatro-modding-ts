@@ -1,11 +1,14 @@
 
-type ModDefinition = {
-    mod_id: string;
+type ModDefinitionMetadata = {
+    mod_id:string;
     name: string;
     version: string;
     author: string;
-    description: string[];
+    url: string;
+    description:string[];
     enabled: boolean;
+}
+type ModDefinition = ModDefinitionMetadata & {
     on_pre_load?: () => void;
     on_enable?: () => void;
     on_disable?: () => void;
@@ -53,6 +56,7 @@ type GameTag = {
     apply_to_run: (props: {type:"immediate" | "new_blind_choice"}) => boolean;
 }
 type GlobalState = {
+    modData: any;
     jokers: {
         T: {
             h: number;

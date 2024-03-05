@@ -1,9 +1,8 @@
-import { quickRestartMod } from "@balatrots/examples/quite-restart.mod";
+
+import { TestMod } from "@balatrots/examples/testmod.mod";
 import { loadMods } from "@balatrots/utilities";
 
 
 loadMods([
-    // testMod,
-    // planetsMultiplicator,
-    quickRestartMod
+    new TestMod()
 ]);
