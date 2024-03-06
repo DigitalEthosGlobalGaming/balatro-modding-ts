@@ -1,0 +1,36 @@
+const testMod2: ModDefinition = {
+  mod_id: "test-mod-0002",
+  name: "TestMod2",
+  version: "0.0.5",
+  author: "stinkfire",
+  description: ["Test Mod 1"],
+  enabled: true,
+  on_pre_load: () => {
+    debugMessage("on_pre_load");
+  },
+  on_enable: () => {
+    debugMessage("on_enable");
+  },
+  on_disable: () => {
+    debugMessage("on_disable");
+  },
+  on_pre_update: () => {
+    // debugMessage("on_pre_update");
+  },
+  on_post_update: () => {
+    // debugMessage("on_post_update");
+  },
+  on_pre_render: () => {
+    // debugMessage("on_pre_render");
+  },
+  on_post_render: () => {
+    // debugMessage("on_post_render");
+  },
+  on_key_pressed: (keyName: string) => {
+    debugMessage("on_key_pressed");
+  },
+  on_mouse_pressed: (x: number, y: number, button: string, touches: number) => {
+    debugMessage("on_mouse_pressed");
+  },
+};
+export { testMod2 };
