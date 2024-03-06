@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "dev": "ts-node ./watch.ts"
+  },
+  "devDependencies": {
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "chokidar": "^3.6.0",
+    "concurrently": "^8.2.2",
+    "dotenv": "^16.4.5",
+    "ts-node": "^10.9.2"
+  }
+}
