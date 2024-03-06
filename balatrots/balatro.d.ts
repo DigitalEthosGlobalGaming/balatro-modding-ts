@@ -120,6 +120,51 @@ type GlobalState = {
                 x: number;
             }
         }
-    } | null
+    } | null;
+    localization: {
+        [pool: string]: {
+            [id: string]: string;
+        }
+    }
+    P_CENTERS: {
+        [slug:string]: Deck
+    }
+    P_CENTERS_POOLS: Deck[]
 }
+
 declare const G: GlobalState;
+
+
+declare type Joker = {
+    order: number;
+    unlocked: boolean;
+    discovered: boolean;
+    blueprint_compat: boolean;
+    eternal_compat: boolean;
+    rarity: number;
+    cost: number;
+    name: string;
+    set: string;
+    config: {
+        extra?: number;
+        x_mult?: number;
+    };
+    pos: {
+        x: number;
+        y: number;
+    }
+}
+
+declare type Deck =  {
+    slug: string;
+    name: string;
+    discovered: boolean;
+    unlocked: boolean;
+    spritePos: {
+        x: number;
+        y: number;
+    };
+    config: {
+        extra?: number;
+        x_mult?: number;
+    };
