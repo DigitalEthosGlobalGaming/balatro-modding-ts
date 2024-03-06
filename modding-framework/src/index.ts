@@ -1,5 +1,8 @@
-import { testMod } from "@balatrots/examples/testmod.mod";
 
-debugMessage("Mod has been loaded v3!");
+import { TestMod } from "@balatrots/examples/testmod.mod";
+import { loadMods } from "@balatrots/utilities";
 
-export default [testMod];
+
+export default loadMods([
+    new TestMod()
+]);

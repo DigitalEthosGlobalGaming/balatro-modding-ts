@@ -1,6 +1,9 @@
+
 import { getData } from "./data";
+import { Subscription } from "./events";
 
 export class Mod {
+    subscriptions: Subscription[] = [];
     definition: ModDefinitionMetadata;
     constructor(definition: ModDefinitionMetadata) {
         this.definition = definition;
@@ -32,10 +35,42 @@ export class Mod {
         key = this.getId() + "_" + key;
         return getData(key, defaultValue);
     }
+    
+    unload() {
+        this.onUnload();     
+        const subscriptionManager = G.BALATROTS?.subscriptionManager;
+        if (subscriptionManager != undefined) {
+            for (const subscription of this.subscriptions) {
+                subscriptionManager.unsubscribe(subscription);
+            }
+        }   
+    }
+
+    onUnload() {
+
+    }
+
+    load() {
+        this.onPreLoad();
+        const me = this;
+        const subscriptionManager = G.BALATROTS?.subscriptionManager;
+        if (subscriptionManager != undefined) {
+            const subscription = subscriptionManager.subscribe("KeyPressUpdate", (key: string, dt: any) => {
+                me.onKeyPressed(key,dt);
+            });
+            this.subscriptions.push(subscription);
+        }
+        this.onLoad();
+    }
+
+    onLoad() {
+
+    }
 
     onPreLoad() {
 
     }
+    
     onEnable() {
         
     }
@@ -54,7 +89,7 @@ export class Mod {
     onPostRender() {
 
     }
-    onKeyPressed(keyName: string | undefined) {
+    onKeyPressed(keyName: string | undefined, dt: any) {
 
     }
     onMousePressed(x: number, y: number, button: string | undefined, touches: number) {
@@ -62,36 +97,3 @@ export class Mod {
     }
 
 }
-
-export function loadModFromClass(mod: Mod) {
-    const definition: ModDefinition = mod.definition;
-    definition.on_pre_load = () => {
-        mod.onPreLoad();
-    }
-    definition.on_enable = () => {
-        mod.onEnable();
-    }
-    definition.on_disable = () => {
-        mod.onDisable();
-    }
-    definition.on_pre_update = () => {
-        mod.onPreUpdate();
-    }
-    definition.on_post_update = () => {
-        mod.onPostUpdate();
-    }
-    definition.on_pre_render = () => {
-        mod.onPreRender();
-    }
-    definition.on_post_render = () => {
-        mod.onPostRender();
-    }
-    definition.on_key_pressed = (keyName: string) => {
-        mod.onKeyPressed(keyName);
-    }
-    definition.on_mouse_pressed = (x: number, y: number, button: string, touches: number) => {
-        mod.onMousePressed(x, y, button, touches);
-    }
-    return definition;
-}
-
