@@ -1,99 +1,98 @@
-
-import { getData } from "./data";
+import { getData, setData } from "./data";
 import { Subscription } from "./events";
 
 export class Mod {
-    subscriptions: Subscription[] = [];
-    definition: ModDefinitionMetadata;
-    constructor(definition: ModDefinitionMetadata) {
-        this.definition = definition;
-    }    
-    isEnabled() {
-        return this.definition.enabled;
+  subscriptions: Subscription[] = [];
+  definition: ModDefinitionMetadata;
+  constructor(definition: ModDefinitionMetadata) {
+    this.definition = definition;
+  }
+  isEnabled() {
+    return this.definition.enabled;
+  }
+  getId() {
+    return this.definition.mod_id;
+  }
+  getName() {
+    return this.definition.name;
+  }
+  getVersion() {
+    return this.definition.version;
+  }
+  setData(key: string, defaultValue: any) {
+    if (key == undefined) {
+      return defaultValue;
     }
-    getId() {
-        return this.definition.mod_id;
+    key = this.getId() + "_" + key;
+    setData(key, defaultValue);
+  }
+
+  getData(key: string, defaultValue: any) {
+    if (key == undefined) {
+      return defaultValue;
     }
-    getName() {
-        return this.definition.name;
-    }
-    getVersion() {
-        return this.definition.version;
-    }
-    setData(key: string, defaultValue: any) {
-        if (key == undefined) {
-            return defaultValue;
+    key = this.getId() + "_" + key;
+    return getData(key, defaultValue);
+  }
+
+  unload() {
+    debugMessage("Unloading mod: " + this.getId());
+    try {
+      this.onUnload();
+      const subscriptionManager = G.BALATROTS?.subscriptionManager;
+      if (subscriptionManager != undefined) {
+        for (const subscription of this.subscriptions) {
+          subscriptionManager.unsubscribe(subscription);
         }
-        key = this.getId() + "_" + key;
-        this.setData(key, defaultValue);
+      }
+      debugMessage("Mod Unloaded: " + this.getId());
+    } catch (e: any) {
+      debugMessage("Error Unloading mod: " + this.getId());
+      debugMessage(e);
     }
+  }
 
-    getData(key: string, defaultValue: any) {
-        if (key == undefined) {
-            return defaultValue;
-        }
-        key = this.getId() + "_" + key;
-        return getData(key, defaultValue);
+  onUnload() {}
+
+  load() {
+    debugMessage("Loading Mod: " + this.getId());
+    try {
+      this.onPreLoad();
+      const me = this;
+      const subscriptionManager = G.BALATROTS?.subscriptionManager;
+      if (subscriptionManager != undefined) {
+        const subscription = subscriptionManager.subscribe(
+          "KeyPressUpdate",
+          (args: any[]) => {
+            me.onKeyPressed(args[0], args[1]);
+          }
+        );
+        this.subscriptions.push(subscription);
+      }
+      this.onLoad();
+
+      debugMessage("Mod Loaded: " + this.getId());
+    } catch (e: any) {
+      debugMessage("Error loading mod: " + this.getId());
+      debugMessage(e);
     }
-    
-    unload() {
-        this.onUnload();     
-        const subscriptionManager = G.BALATROTS?.subscriptionManager;
-        if (subscriptionManager != undefined) {
-            for (const subscription of this.subscriptions) {
-                subscriptionManager.unsubscribe(subscription);
-            }
-        }   
-    }
+  }
 
-    onUnload() {
+  onLoad() {}
 
-    }
+  onPreLoad() {}
 
-    load() {
-        this.onPreLoad();
-        const me = this;
-        const subscriptionManager = G.BALATROTS?.subscriptionManager;
-        if (subscriptionManager != undefined) {
-            const subscription = subscriptionManager.subscribe("KeyPressUpdate", (key: string, dt: any) => {
-                me.onKeyPressed(key,dt);
-            });
-            this.subscriptions.push(subscription);
-        }
-        this.onLoad();
-    }
-
-    onLoad() {
-
-    }
-
-    onPreLoad() {
-
-    }
-    
-    onEnable() {
-        
-    }
-    onDisable() {
-
-    }
-    onPreUpdate() {
-
-    }
-    onPostUpdate() {
-
-    }
-    onPreRender() {
-
-    }
-    onPostRender() {
-
-    }
-    onKeyPressed(keyName: string | undefined, dt: any) {
-
-    }
-    onMousePressed(x: number, y: number, button: string | undefined, touches: number) {
-
-    }
-
+  onEnable() {}
+  onDisable() {}
+  onPreUpdate() {}
+  onPostUpdate() {}
+  onPreRender() {}
+  onPostRender() {}
+  onKeyPressed(keyName: string, dt: number) {}
+  onMousePressed(
+    x: number,
+    y: number,
+    button: string | undefined,
+    touches: number
+  ) {}
 }

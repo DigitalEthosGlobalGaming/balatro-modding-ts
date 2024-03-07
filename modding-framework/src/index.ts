@@ -1,8 +1,10 @@
-
+import { initialiseEvents } from "@balatrots/events";
 import { TestMod } from "@balatrots/examples/testmod.mod";
-import { loadMods } from "@balatrots/utilities";
+import { loadMods, unloadMods } from "@balatrots/utilities";
 
+unloadMods();
+initialiseEvents();
 
-export default loadMods([
-    new TestMod()
-]);
+const mods = loadMods([new TestMod()]);
+
+export default mods;
