@@ -83,8 +83,8 @@ function initialiseEvents(this: void) {
     const originalFunction: (this: void, ...args: any) => void =
       Controller.key_press_update;
     G.BALATROTS.originalFunctions.KeyPressUpdate = originalFunction;
-    Controller.key_press_update = function newKeyPressUpdate(
-      this,
+    Controller.key_press_update = (function newKeyPressUpdate(
+      self: any,
       key: any,
       dt: any
     ) {
@@ -93,13 +93,13 @@ function initialiseEvents(this: void) {
           G.BALATROTS?.subscriptionManager;
         localSubManager.triggerEvent("preKeyPressUpdate", [key, dt]);
 
-        originalFunction(this, key, dt);
+        originalFunction(self, key, dt);
 
         localSubManager.triggerEvent("KeyPressUpdate", [key, dt]);
       } catch (e) {
         debugMessage(e as any);
       }
-    };
+    }) as typeof Controller.key_press_update;
   }
 
   const currentSubscriptionManager: SubscriptionManager | undefined =

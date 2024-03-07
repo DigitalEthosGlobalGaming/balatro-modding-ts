@@ -2,7 +2,7 @@
 --- MOD_NAME: Mod Loader Extension
 --- MOD_ID: MOD_LOADER_EXTENSION
 --- MOD_AUTHOR: [Stinkfire]
---- MOD_DESCRIPTION: Create a special deck that only contains 4s!
+--- MOD_DESCRIPTION: Loads mods built using the balatrots modding API
 
 
 ----------------------------------------------

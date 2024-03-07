@@ -68,6 +68,7 @@ type GlobalState = {
     mods?: { [id: string]: any };
     subscriptionManager?: any;
     originalFunctions?: any;
+    uniqueId?: number;
   };
   modData: any;
   jokers: {
@@ -143,7 +144,24 @@ type GlobalState = {
     [slug: string]: Deck;
   };
   P_CENTERS_POOLS: Deck[];
+  UIT: {
+    T: any;
+    C: any;
+    R: any;
+    Root: any;
+  }
+  C: {
+    GREEN: any;
+    RED: any;
+    WHITE: any;
+    UI: {
+      TEXT_LIGHT: any;
+    }
+  }
+  FUNCS: any;
 };
+
+declare type UIAlignments = "cm" | "tm" | "cl";
 
 declare const G: GlobalState;
 

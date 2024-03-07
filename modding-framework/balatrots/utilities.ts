@@ -68,3 +68,14 @@ export function loadMod(this: void, mod: Mod) {
   mod.load();
   return mod;
 }
+
+
+export function getUniqueId(): string {
+  if (G.BALATROTS == undefined) {
+    throw "BALATROTS is not initialised";
+  }
+  
+  G.BALATROTS.uniqueId = (G.BALATROTS?.uniqueId ?? 0) + 0.0001;
+  const uniqueId = G.BALATROTS.uniqueId;
+  return uniqueId.toString();
+}

@@ -1,7 +1,9 @@
 import { getData, setData } from "./data";
 import { Subscription } from "./events";
+import { UIElement } from "./ui/ui-element";
 
 export class Mod {
+  private UI: UIElement[] = [];
   subscriptions: Subscription[] = [];
   definition: ModDefinitionMetadata;
   constructor(definition: ModDefinitionMetadata) {
@@ -35,6 +37,20 @@ export class Mod {
     return getData(key, defaultValue);
   }
 
+  addUIElement(uiElement: UIElement) {
+    this.UI.push(uiElement);
+    uiElement.render();
+  }
+  removeUIElement(uiElement: UIElement | string) {
+    this.UI = this.UI.filter((ui) => {
+      const id = typeof uiElement == "string" ? uiElement : uiElement.id;
+      if (ui.id == id) {
+        ui.destroy();
+      }
+      return ui.id != id;
+    });
+  }
+
   unload() {
     debugMessage("Unloading mod: " + this.getId());
     try {
@@ -44,6 +60,9 @@ export class Mod {
         for (const subscription of this.subscriptions) {
           subscriptionManager.unsubscribe(subscription);
         }
+      }
+      for(const ui of this.UI) {
+        ui.destroy();
       }
       debugMessage("Mod Unloaded: " + this.getId());
     } catch (e: any) {
