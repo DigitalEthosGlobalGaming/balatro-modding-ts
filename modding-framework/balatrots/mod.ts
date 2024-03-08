@@ -2,6 +2,40 @@ import { getData, setData } from "./data";
 import { Subscription } from "./events";
 import { UIElement } from "./ui/ui-element";
 
+function test() {
+  const definition = {
+    n: G.UIT.ROOT,
+    config: { align: "cm", colour: G.C.CLEAR },
+    nodes: [
+      {
+        n: G.UIT.C,
+        config: {
+          align: "cm",
+          r: 0.1,
+          padding: 0.04,
+          emboss: 0.04,
+          minw: 0.5,
+          colour: G.C.L_BLACK,
+        },
+        nodes: [
+          {
+            n: G.UIT.T,
+            config: {
+              text: "testing this",
+              colour: G.C.JOKER_GREY,
+              scale: 0.35,
+              shadow: true,
+            },
+          },
+        ],
+      },
+    ],
+  };
+  const overlayMenu: (this: void, props: any) => void = G.FUNCS.overlay_menu;
+  overlayMenu({ definition });
+}
+// test();
+
 export class Mod {
   private UI: UIElement[] = [];
   subscriptions: Subscription[] = [];
@@ -38,8 +72,12 @@ export class Mod {
   }
 
   addUIElement(uiElement: UIElement) {
+    const uiConfiguration = uiElement.render();
     this.UI.push(uiElement);
-    uiElement.render();
+
+    // GUI.["ui_" + this.getId()] = () => {
+    //   return uiConfiguration;
+    // };
   }
   removeUIElement(uiElement: UIElement | string) {
     this.UI = this.UI.filter((ui) => {
@@ -52,6 +90,7 @@ export class Mod {
   }
 
   unload() {
+    test();
     debugMessage("Unloading mod: " + this.getId());
     try {
       this.onUnload();
@@ -61,7 +100,7 @@ export class Mod {
           subscriptionManager.unsubscribe(subscription);
         }
       }
-      for(const ui of this.UI) {
+      for (const ui of this.UI) {
         ui.destroy();
       }
       debugMessage("Mod Unloaded: " + this.getId());
@@ -74,7 +113,7 @@ export class Mod {
   onUnload() {}
 
   load() {
-    debugMessage("Loading Mod: " + this.getId());
+    debugMessage("Loading Mod: " + this.getId() + "v" + this.getVersion());
     try {
       this.onPreLoad();
       const me = this;

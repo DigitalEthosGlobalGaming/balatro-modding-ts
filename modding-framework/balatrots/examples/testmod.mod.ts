@@ -1,26 +1,16 @@
 import { Mod } from "@balatrots/mod";
 
-// function createMainMenuButton() {
-//     const exit_button = UIBox_button({
-// 		minw = 5,
-// 		button = "reload_mods",
-// 		label = {
-// 			"Reload Mods"
-// 		}
-// 	})
-// 	table.insert(contents.nodes[1].nodes[1].nodes[1].nodes, #contents.nodes[1].nodes[1].nodes[1].nodes + 1, exit_button)
-// }
-
 export class TestMod extends Mod {
+  count: number = 0;
   constructor() {
     super({
       mod_id: "test-mod-0001",
       name: "TestMod",
-      version: "0.0.3",
+      version: "0.0.4",
       url: "https://github.com/DigitalEthosGlobalGaming/balatro-modding-ts",
       author: "stinkfire",
       description: [],
-      enabled: false,
+      enabled: true,
     });
   }
 
@@ -33,6 +23,6 @@ export class TestMod extends Mod {
       keyName +
       " - total key presses: " +
       this.getData("keyPressed", 0).toString();
-    debugMessage(message);
+    this.count = this.count + 1;
   }
 }

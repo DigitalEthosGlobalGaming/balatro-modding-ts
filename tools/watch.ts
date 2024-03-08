@@ -3,7 +3,6 @@ import { join } from "path";
 import { watch } from "chokidar";
 import { copyFile } from "fs";
 
-
 const envConfig = config();
 
 const pathToWatch = join(
@@ -13,7 +12,7 @@ const pathToWatch = join(
 );
 // Initialize watcher.
 const watcher = watch(pathToWatch, { persistent: true });
-const debug: any = true;
+const debug: any = false;
 
 function moveFile(from: string, to: string) {
   if (debug as any) {
@@ -31,24 +30,25 @@ const modName = envConfig.parsed?.MOD_NAME ?? "";
 function deployFile(pathDir: string) {
   try {
     const toPath = join(modDirectory, modName + ".mod.lua");
-    moveFile(pathDir,toPath);
+    moveFile(pathDir, toPath);
   } catch (e) {
     console.error("Error deploying file", e);
   }
 }
-
 
 const delployModLoaderExtensionPath = join(
   __dirname,
   "../",
   "mod-loader-extension/mod-loader-extention.lua"
 );
-const watchModLoaderExtension = watch(delployModLoaderExtensionPath, { persistent: true });
+const watchModLoaderExtension = watch(delployModLoaderExtensionPath, {
+  persistent: true,
+});
 function delployModLoaderExtension(pathDir: string) {
   pathDir = pathDir.replaceAll("\\", "/");
   try {
     const toPath = join(modDirectory, pathDir.split("/").pop());
-    moveFile(pathDir,toPath);
+    moveFile(pathDir, toPath);
   } catch (e) {
     console.error("Error deploying file", e);
   }
@@ -56,4 +56,7 @@ function delployModLoaderExtension(pathDir: string) {
 
 // Add event listeners.
 watcher.on("add", deployFile).on("change", deployFile).on("unlink", deployFile);
-watchModLoaderExtension.on("add", delployModLoaderExtension).on("change", delployModLoaderExtension).on("unlink", delployModLoaderExtension);
+watchModLoaderExtension
+  .on("add", delployModLoaderExtension)
+  .on("change", delployModLoaderExtension)
+  .on("unlink", delployModLoaderExtension);

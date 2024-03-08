@@ -145,22 +145,30 @@ type GlobalState = {
   };
   P_CENTERS_POOLS: Deck[];
   UIT: {
+    ROOT: any;
     T: any;
     C: any;
     R: any;
-    Root: any;
-  }
+    BOX: any;
+  };
   C: {
+    L_BLACK: any;
+    JOKER_GREY: any;
+    CLEAR: any;
     GREEN: any;
     RED: any;
+    BOOSTER: any;
     WHITE: any;
     UI: {
       TEXT_LIGHT: any;
-    }
-  }
-  FUNCS: any;
+    };
+  };
+  FUNCS: {
+    overlay_menu: (props: { definition: any }) => void;
+  };
 };
 
+declare const GUI: any;
 declare type UIAlignments = "cm" | "tm" | "cl";
 
 declare const G: GlobalState;
@@ -200,4 +208,4 @@ declare type Deck = {
   };
 };
 
-declare function UIBox_button(props: any): any;
+declare function UIBox_button(this: void, props: any): any;

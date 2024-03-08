@@ -81,7 +81,7 @@ function loadMods(modsDirectory)
                 processDirectory(filePath, depth + 1)
             elseif filename:match("%.mod.lua$") then  -- Check if the file is a .lua file
                 debugMessage("-----");
-                debugMessage("-----Loading Mod Package " .. filePath + "-----");
+                debugMessage("-----Loading Mod Package " .. filePath .. "-----");
                 debugMessage("-----");
                 local fileContent = love.filesystem.read(filePath);
 
